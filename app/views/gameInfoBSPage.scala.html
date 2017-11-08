@@ -1,3 +1,5 @@
+@(ID:String)(gameList: scala.collection.mutable.Set[Game])
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -30,18 +32,12 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item active">
-              <a class="nav-link" href="#">Home
+              <a class="nav-link" href=@routes.MainController.homepage()>Home
                 <span class="sr-only">(current)</span>
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">About</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Services</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Contact</a>
+              <a class="nav-link" href=@routes.MainController.contactUsPage()>Contact Us</a>
             </li>
           </ul>
         </div>
@@ -50,9 +46,10 @@
 
     <!-- Page Content -->
     <div class="container">
+        @for(game<-gameList if game.gameID == ID){
 
       <!-- Portfolio Item Heading -->
-      <h1 class="my-4">Game Title
+      <h1 class="my-4">@game.title
         <small></small>
       </h1>
 
@@ -60,55 +57,21 @@
       <div class="row">
 
         <div class="col-md-8">
-          <img class="img-fluid" src="http://placehold.it/750x500" alt="">
+          <img class="img-fluid" src=@routes.Assets.at(game.imageURL) alt="">
         </div>
 
         <div class="col-md-4">
           <h3 class="my-3">Game Description</h3>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae. Sed dui lorem, adipiscing in adipiscing et, interdum nec metus. Mauris ultricies, justo eu convallis placerat, felis enim.</p>
-          <h3 class="my-3">Game Details</h3>
-          <ul>
-            <li>Lorem Ipsum</li>
-            <li>Dolor Sit Amet</li>
-            <li>Consectetur</li>
-            <li>Adipiscing Elit</li>
-          </ul>
+          <p>@game.description</p>
           <button>Add To Basket</button>
         </div>
 
       </div>
+        }
       <!-- /.row -->
 
-      <!-- Related Projects Row -->
-      <h3 class="my-4">Related Projects</h3>
 
-      <div class="row">
 
-        <div class="col-md-3 col-sm-6 mb-4">
-          <a href="#">
-            <img class="img-fluid" src="http://placehold.it/500x300" alt="">
-          </a>
-        </div>
-
-        <div class="col-md-3 col-sm-6 mb-4">
-          <a href="#">
-            <img class="img-fluid" src="http://placehold.it/500x300" alt="">
-          </a>
-        </div>
-
-        <div class="col-md-3 col-sm-6 mb-4">
-          <a href="#">
-            <img class="img-fluid" src="http://placehold.it/500x300" alt="">
-          </a>
-        </div>
-
-        <div class="col-md-3 col-sm-6 mb-4">
-          <a href="#">
-            <img class="img-fluid" src="http://placehold.it/500x300" alt="">
-          </a>
-        </div>
-
-      </div>
       <!-- /.row -->
 
     </div>

@@ -3,7 +3,9 @@ package controllers
 import javax.inject.Inject
 
 import models.Game
+import models.Suggestion
 import models.JsonFormats.gameFormat
+import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, Controller}
 import play.modules.reactivemongo._
@@ -15,10 +17,10 @@ import reactivemongo.play.json.collection.JSONCollection
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 
-class DBController @Inject() (val reactiveMongoApi: ReactiveMongoApi) extends Controller
-  with MongoController with ReactiveMongoComponents{
+class MainController @Inject() (val reactiveMongoApi: ReactiveMongoApi, val messagesApi:MessagesApi) extends Controller
+  with MongoController with ReactiveMongoComponents with I18nSupport{
 
-  var gamesList = scala.collection.mutable.ListBuffer[Game]()
+  var gamesList = scala.collection.mutable.Set[Game]()
 
   def collection: Future[JSONCollection] = database.map(
     _.collection[JSONCollection]("games"))
@@ -26,12 +28,10 @@ class DBController @Inject() (val reactiveMongoApi: ReactiveMongoApi) extends Co
   def create = Action.async {
     val game = Game("F", "Gremlins Fight Back", 39.99, "The gremlins are back for another" +
         " skin crawling adventure. Raise Gizmo and help him defeat the evil Mogwai. A game which " +
-        " Marianne's made up game magazine says is a MUST PLAY!", "images/gremplins.jpg")
+        " Marianne's made up game magazine says is a MUST PLAY!", "images/gremlins.jpg")
     val futureResult = collection.flatMap(_.insert(game))
     futureResult.map(_ => Ok)
   }
-
-//
 
   def homepage = Action.async {
     val cursor: Future[Cursor[Game]] = collection.map {
@@ -46,6 +46,14 @@ class DBController @Inject() (val reactiveMongoApi: ReactiveMongoApi) extends Co
     }
   }
 
+  def gameInfoPage(id:String) = Action {
+    Ok(views.html.gameInfoBSPage(id)(gamesList))
+  }
+
+  def contactUsPage = Action {
+    Ok(views.html.contactUsBSPage(Suggestion.suggestions, Suggestion.createSuggestionForm))
+  }
+
   def removeAll = Action.async {
     val selector = BSONDocument()
     val futureRemove = collection.flatMap(_.remove(selector))
@@ -53,12 +61,28 @@ class DBController @Inject() (val reactiveMongoApi: ReactiveMongoApi) extends Co
   }
 
   def update: Action[AnyContent] = Action.async { implicit request =>
-    val game = Game("A", "Sonic Forces", 25.99, "Sonic is fast, sonic " +
-      "gets gold hoops,sonic has cool hair. Come be sonic on another rip roaring adventure. " +
-      "We all want tobe a hedgehog at some point", raw"images/sonic.jpg")
-    val selector = BSONDocument("title" -> "Sonic Forces")
+    val game = Game("F", "Gremlins Fight Back", 39.99, "The gremlins are back " +
+      "for another skin crawling adventure. Raise Gizmo and help him defeat the evil Mogwai. " +
+      "A game which Marianne's made up game magazine says is a MUST PLAY!", raw"images/gremlins.jpg")
+    val selector = BSONDocument("gameID" -> "F")
     val futureResult = collection.map(_.findAndUpdate(selector,game))
     futureResult.map(_ => Ok("Updated user"))
   }
+
+  def listSuggestions = Action { implicit request =>
+    Ok(views.html.contactUsBSPage(Suggestion.suggestions, Suggestion.createSuggestionForm))
+  }
+
+  def createSuggestion = Action { implicit request =>
+    val formValidationResult = Suggestion.createSuggestionForm.bindFromRequest
+    formValidationResult.fold({ formWithErrors =>
+      BadRequest(views.html.contactUsBSPage(Suggestion.suggestions, formWithErrors))
+    }, { sug =>
+      sug
+      Suggestion.suggestions.append(sug)
+      Redirect(routes.MainController.listSuggestions)
+    })
+  }
+
 }
 

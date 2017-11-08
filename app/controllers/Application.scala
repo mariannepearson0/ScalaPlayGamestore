@@ -1,5 +1,6 @@
 package controllers
 
+import models.Game
 import play.api.mvc._
 
 class Application extends Controller {
@@ -10,19 +11,5 @@ class Application extends Controller {
     Ok(views.html.index("Game Shop"))
   }
 
-//  def homepage = Action {
-//    Ok(views.html.homepageBS())
-//  }
 
-  def gameInfoPage = Action {
-    Ok(views.html.gameInfoBSPage())
-  }
-
-  def checkoutPage = Action {
-    Ok(views.html.Checkout())
-  }
-
-  def contactUsPage = Action {
-    Ok(views.html.contactUsBSPage())
-  }
 }

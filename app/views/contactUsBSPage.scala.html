@@ -1,3 +1,4 @@
+@(sugs:Seq[Suggestion], form:Form[Suggestion])(implicit messages: Messages)
 <!DOCTYPE html>
 <html lang="en">
 
@@ -30,7 +31,7 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item active">
-              <a class="nav-link" href="@routes.DBController.homepage()">Home
+              <a class="nav-link" href="@routes.MainController.homepage()">Home
                 <span class="sr-only">(current)</span>
               </a>
             </li>
@@ -49,38 +50,63 @@
       <h1 class="my-4">About Game Face
         <small></small>
       </h1>
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint, explicabo dolores ipsam aliquam inventore corrupti eveniet quisquam quod totam laudantium repudiandae obcaecati ea consectetur debitis velit facere nisi expedita vel?</p>
-
-      <!-- Team Members Row -->
-      <div class="row">
-        <div class="col-lg-12">
-          <h2 class="my-4">Our Team</h2>
-        </div>
-        <div class="col-lg-4 col-sm-6 text-center mb-4">
-          <img class="rounded-circle img-fluid d-block mx-auto" src="http://placehold.it/200x200" alt="">
-          <h3>John Smith
-            <small>Job Title</small>
-          </h3>
-          <p>What does this team member to? Keep it short! This is also a great spot for social links!</p>
-        </div>
-        <div class="col-lg-4 col-sm-6 text-center mb-4">
-          <img class="rounded-circle img-fluid d-block mx-auto" src="http://placehold.it/200x200" alt="">
-          <h3>John Smith
-            <small>Job Title</small>
-          </h3>
-          <p>What does this team member to? Keep it short! This is also a great spot for social links!</p>
-        </div>
-        <div class="col-lg-4 col-sm-6 text-center mb-4">
-          <img class="rounded-circle img-fluid d-block mx-auto" src="http://placehold.it/200x200" alt="">
-          <h3>John Smith
-            <small>Job Title</small>
-          </h3>
-          <p>What does this team member to? Keep it short! This is also a great spot for social links!</p>
-        </div>
-      </div>
+      <p>Game Face was founded in 2005 by Marianne Pearson who knows nothing about video games. The business is struggling
+      please help her to get back on track!</p>
 
     </div>
     <!-- /.container -->
+    <!-- google maps -->
+      <head>
+        <style>
+       #map {
+         height: 400px;
+         width: 100%;
+       }
+    </style>
+      </head>
+      <body>
+        <h3>How to Find Us</h3>
+        <div id="map"></div>
+        <script>
+      function initMap() {
+        var mediacity = {lat: 53.473297, lng: -2.297744};
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 15,
+          center: mediacity
+        });
+        var marker = new google.maps.Marker({
+          position: mediacity,
+          map: map
+        });
+      }
+    </script>
+        <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAUZsezsHKJXIG3w6y48jg9EurlR02HLcg&callback=initMap">
+    </script>
+      </body>
+
+      @main("CDs") {
+          <h1>Suggestions</h1>
+          <table>
+              <thead>
+                  <tr><th>Name</th><th>Suggestion</th></tr>
+              </thead>
+              <tbody>
+              @for(sug <- sugs) {
+                  <tr><td>@sug.name</td>
+                      <td>@sug.suggest</td></tr>
+              }
+              </tbody>
+          </table>
+          <hr/>
+
+          @helper.form(routes.MainController.createSuggestion()) {
+              @helper.inputText(form("name"), 'label-> "Name" , 'showConstraints -> false)
+              @helper.inputText(form("suggest"), '_label -> "Suggestion" , '_showConstraints -> false)
+              <button type="submit">Create Suggestion</button>
+          }
+      }
+
 
     <!-- Footer -->
     <footer class="py-5 bg-dark">

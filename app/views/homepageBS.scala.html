@@ -1,4 +1,4 @@
-@(gameList: scala.collection.mutable.ListBuffer[Game])
+@(gameList: scala.collection.mutable.Set[Game])
 <!DOCTYPE html>
 <html lang="en">
 
@@ -36,7 +36,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="@routes.Application.contactUsPage()">Contact Us</a>
+              <a class="nav-link" href="@routes.MainController.contactUsPage()">Contact Us</a>
             </li>
           </ul>
         </div>
@@ -70,13 +70,13 @@
             </ol>
             <div class="carousel-inner" role="listbox">
               <div class="carousel-item active">
-                <img class="d-block img-fluid" src="http://placehold.it/900x350" alt="First slide">
+                <img class="d-block img-fluid" src="@routes.Assets.at("images/bigLego.jpg")" alt="First slide">
               </div>
               <div class="carousel-item">
-                <img class="d-block img-fluid" src="http://placehold.it/900x350" alt="Second slide">
+                <img class="d-block img-fluid" src="@routes.Assets.at("images/bigScary.jpg")" alt="Second slide">
               </div>
               <div class="carousel-item">
-                <img class="d-block img-fluid" src="http://placehold.it/900x350" alt="Third slide">
+                <img class="d-block img-fluid" src="@routes.Assets.at("images/bigShooter.jpg")" alt="Third slide">
               </div>
             </div>
             <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
@@ -91,101 +91,24 @@
 
           <div class="row">
 
-            <div class="col-lg-4 col-md-6 mb-4">
-              <div class="card h-100">
-                <a href='@routes.Application.gameInfoPage()'><img class="card-img-top" src="@routes.Assets.at("images/sonic.jpg")" alt=""></a>
-                <div class="card-body">
-                  <h4 class="card-title">
-                    <a href="#">@gameList(0).title</a>
-                  </h4>
-                  <h5>@gameList(0).price</h5>
-                  <p class="card-text">@gameList(0).description</p>
-                </div>
-                <div class="card-footer">
-                  <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
-                </div>
-              </div>
-            </div>
+              @for(game <- gameList) {
 
             <div class="col-lg-4 col-md-6 mb-4">
               <div class="card h-100">
-                <a href="#"><img class="card-img-top" src="@routes.Assets.at("images/cod.png")" alt=""></a>
+                <a href='@routes.MainController.gameInfoPage(game.gameID)'><img class="card-img-top" src="@routes.Assets.at(game.imageURL)" alt=""></a>
                 <div class="card-body">
                   <h4 class="card-title">
-                    <a href="#">@gameList(1).title</a>
+                    <a href='@routes.MainController.gameInfoPage(game.gameID)'>@game.title</a>
                   </h4>
-                  <h5>@gameList(1).price</h5>
-                  <p class="card-text">@gameList(1).description</p>
+                  <h5>£@game.price</h5>
+                  <p class="card-text">@game.description</p>
                 </div>
                 <div class="card-footer">
                   <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
                 </div>
               </div>
             </div>
-
-            <div class="col-lg-4 col-md-6 mb-4">
-              <div class="card h-100">
-                <a href="#"><img class="card-img-top" src="@routes.Assets.at("images/singstar.jpg")" alt=""></a>
-                <div class="card-body">
-                  <h4 class="card-title">
-                    <a href="#">@gameList(2).title</a>
-                  </h4>
-                  <h5>@gameList(2).price</h5>
-                  <p class="card-text">@gameList(2).description</p>
-                </div>
-                <div class="card-footer">
-                  <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
-                </div>
-              </div>
-            </div>
-
-            <div class="col-lg-4 col-md-6 mb-4">
-              <div class="card h-100">
-                <a href="#"><img class="card-img-top" src="@routes.Assets.at("images/thesims.jpg")" alt=""></a>
-                <div class="card-body">
-                  <h4 class="card-title">
-                    <a href="#">@gameList(3).title</a>
-                  </h4>
-                  <h5>@gameList(3).price</h5>
-                  <p class="card-text">@gameList(3).description</p>
-                </div>
-                <div class="card-footer">
-                  <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
-                </div>
-              </div>
-            </div>
-
-            <div class="col-lg-4 col-md-6 mb-4">
-              <div class="card h-100">
-                <a href="#"><img class="card-img-top" src="@routes.Assets.at("images/fifa.jpg")" alt=""></a>
-                <div class="card-body">
-                  <h4 class="card-title">
-                    <a href="#">@gameList(4).title</a>
-                  </h4>
-                  <h5>@gameList(4).price</h5>
-                  <p class="card-text">@gameList(4).description</p>
-                </div>
-                <div class="card-footer">
-                  <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
-                </div>
-              </div>
-            </div>
-
-            <div class="col-lg-4 col-md-6 mb-4">
-              <div class="card h-100">
-                <a href="#"><img class="card-img-top" src="@routes.Assets.at("images/gremlins.jpg")" alt=""></a>
-                <div class="card-body">
-                  <h4 class="card-title">
-                    <a href="#">@gameList(5).title</a>
-                  </h4>
-                  <h5>@gameList(5).price</h5>
-                  <p class="card-text">@gameList(5).description</p>
-                </div>
-                <div class="card-footer">
-                  <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
-                </div>
-              </div>
-            </div>
+              }
 
           </div>
           <!-- /.row -->
