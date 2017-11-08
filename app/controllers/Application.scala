@@ -10,9 +10,9 @@ class Application extends Controller {
     Ok(views.html.index("Game Shop"))
   }
 
-  def homepage = Action {
-    Ok(views.html.homepageBS(List("Sonic Forces", "Call of Duty", "Singstar", "The Sims", "Fifa", "Gremlins Fight Back")))
-  }
+//  def homepage = Action {
+//    Ok(views.html.homepageBS())
+//  }
 
   def gameInfoPage = Action {
     Ok(views.html.gameInfoBSPage())

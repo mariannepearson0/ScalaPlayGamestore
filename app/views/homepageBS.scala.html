@@ -1,4 +1,4 @@
-@(gameList: List[String])
+@(gameList: scala.collection.mutable.ListBuffer[Game])
 <!DOCTYPE html>
 <html lang="en">
 
@@ -93,13 +93,13 @@
 
             <div class="col-lg-4 col-md-6 mb-4">
               <div class="card h-100">
-                <a href='@routes.Application.gameInfoPage()'><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
+                <a href='@routes.Application.gameInfoPage()'><img class="card-img-top" src="@routes.Assets.at("images/sonic.jpg")" alt=""></a>
                 <div class="card-body">
                   <h4 class="card-title">
-                    <a href="#">@gameList(0)</a>
+                    <a href="#">@gameList(0).title</a>
                   </h4>
-                  <h5>$24.99</h5>
-                  <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam aspernatur!</p>
+                  <h5>@gameList(0).price</h5>
+                  <p class="card-text">@gameList(0).description</p>
                 </div>
                 <div class="card-footer">
                   <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
@@ -109,13 +109,13 @@
 
             <div class="col-lg-4 col-md-6 mb-4">
               <div class="card h-100">
-                <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
+                <a href="#"><img class="card-img-top" src="@routes.Assets.at("images/cod.png")" alt=""></a>
                 <div class="card-body">
                   <h4 class="card-title">
-                    <a href="#">@gameList(1)</a>
+                    <a href="#">@gameList(1).title</a>
                   </h4>
-                  <h5>$24.99</h5>
-                  <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam aspernatur! Lorem ipsum dolor sit amet.</p>
+                  <h5>@gameList(1).price</h5>
+                  <p class="card-text">@gameList(1).description</p>
                 </div>
                 <div class="card-footer">
                   <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
@@ -125,13 +125,13 @@
 
             <div class="col-lg-4 col-md-6 mb-4">
               <div class="card h-100">
-                <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
+                <a href="#"><img class="card-img-top" src="@routes.Assets.at("images/singstar.jpg")" alt=""></a>
                 <div class="card-body">
                   <h4 class="card-title">
-                    <a href="#">@gameList(2)</a>
+                    <a href="#">@gameList(2).title</a>
                   </h4>
-                  <h5>$24.99</h5>
-                  <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam aspernatur!</p>
+                  <h5>@gameList(2).price</h5>
+                  <p class="card-text">@gameList(2).description</p>
                 </div>
                 <div class="card-footer">
                   <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
@@ -141,13 +141,13 @@
 
             <div class="col-lg-4 col-md-6 mb-4">
               <div class="card h-100">
-                <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
+                <a href="#"><img class="card-img-top" src="@routes.Assets.at("images/thesims.jpg")" alt=""></a>
                 <div class="card-body">
                   <h4 class="card-title">
-                    <a href="#">@gameList(3)</a>
+                    <a href="#">@gameList(3).title</a>
                   </h4>
-                  <h5>$24.99</h5>
-                  <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam aspernatur!</p>
+                  <h5>@gameList(3).price</h5>
+                  <p class="card-text">@gameList(3).description</p>
                 </div>
                 <div class="card-footer">
                   <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
@@ -157,13 +157,13 @@
 
             <div class="col-lg-4 col-md-6 mb-4">
               <div class="card h-100">
-                <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
+                <a href="#"><img class="card-img-top" src="@routes.Assets.at("images/fifa.jpg")" alt=""></a>
                 <div class="card-body">
                   <h4 class="card-title">
-                    <a href="#">@gameList(4)</a>
+                    <a href="#">@gameList(4).title</a>
                   </h4>
-                  <h5>$24.99</h5>
-                  <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam aspernatur! Lorem ipsum dolor sit amet.</p>
+                  <h5>@gameList(4).price</h5>
+                  <p class="card-text">@gameList(4).description</p>
                 </div>
                 <div class="card-footer">
                   <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
@@ -173,13 +173,13 @@
 
             <div class="col-lg-4 col-md-6 mb-4">
               <div class="card h-100">
-                <a href="#"><img class="card-img-top" src="http://placehold.it/700x400" alt=""></a>
+                <a href="#"><img class="card-img-top" src="@routes.Assets.at("images/gremlins.jpg")" alt=""></a>
                 <div class="card-body">
                   <h4 class="card-title">
-                    <a href="#">@gameList(5)</a>
+                    <a href="#">@gameList(5).title</a>
                   </h4>
-                  <h5>$24.99</h5>
-                  <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Amet numquam aspernatur!</p>
+                  <h5>@gameList(5).price</h5>
+                  <p class="card-text">@gameList(5).description</p>
                 </div>
                 <div class="card-footer">
                   <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
@@ -208,8 +208,8 @@
     </footer>
 
     <!-- Bootstrap core JavaScript -->
-    <script src="../../public/startbootstrap-shop-homepage-gh-pages/vendor/jquery/jquery.min.js"></script>
-    <script src="../../public/startbootstrap-shop-homepage-gh-pages/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="@routes.Assets.at("startbootstrap-shop-homepage-gh-pages/vendor/jquery/jquery.min.js")"></script>
+    <script src="@routes.Assets.at("startbootstrap-shop-homepage-gh-pages/vendor/bootstrap/js/bootstrap.bundle.min.js")"></script>
 
   </body>
 

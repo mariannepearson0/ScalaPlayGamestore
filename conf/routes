@@ -3,12 +3,13 @@
 # ~~~~
 
 # Home page
-GET     /                           controllers.Application.homepage
+GET     /                           controllers.DBController.homepage
 GET     /gameInfo                   controllers.Application.gameInfoPage
 GET     /contactUs                  controllers.Application.contactUsPage
 GET     /checkout                   controllers.Application.checkoutPage
 GET     /create                     controllers.DBController.create
-#GET     /find/:gameName             controllers.DBController.findByName(gameName)
+GET     /removeDB                   controllers.DBController.removeAll
+GET     /update                     controllers.DBController.update
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
