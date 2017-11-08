@@ -1,7 +1,6 @@
 package controllers
 
 import javax.inject.Inject
-
 import models.Game
 import models.Suggestion
 import models.JsonFormats.gameFormat
@@ -13,7 +12,6 @@ import play.modules.reactivemongo.json._
 import reactivemongo.api.Cursor
 import reactivemongo.bson.BSONDocument
 import reactivemongo.play.json.collection.JSONCollection
-
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 
@@ -21,6 +19,10 @@ class MainController @Inject() (val reactiveMongoApi: ReactiveMongoApi, val mess
   with MongoController with ReactiveMongoComponents with I18nSupport{
 
   var gamesList = scala.collection.mutable.Set[Game]()
+
+  var basket = scala.collection.mutable.ArrayBuffer[String]()
+
+  var sum:Double = 0
 
   def collection: Future[JSONCollection] = database.map(
     _.collection[JSONCollection]("games"))
@@ -82,6 +84,21 @@ class MainController @Inject() (val reactiveMongoApi: ReactiveMongoApi, val mess
       Suggestion.suggestions.append(sug)
       Redirect(routes.MainController.listSuggestions)
     })
+  }
+
+  def checkoutPage(gameId:String) = Action {
+      basket += gameId
+      Ok(views.html.checkoutPageBS(basket)(gamesList)(sum))
+  }
+
+  def calculateTotal = Action {
+    var newsum:Double = 0
+    for(item <- basket){
+      for(game <- gamesList if game.gameID == item){
+        newsum += game.price
+      }
+    }
+    Ok(views.html.checkoutPageBS(basket)(gamesList)(newsum))
   }
 
 }

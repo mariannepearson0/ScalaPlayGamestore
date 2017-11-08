@@ -7,10 +7,12 @@
 GET     /                           controllers.MainController.homepage
 GET     /gameInfo/:id               controllers.MainController.gameInfoPage(id:String)
 GET     /contactUs                  controllers.MainController.contactUsPage
+GET     /checkout/:gameId           controllers.MainController.checkoutPage(gameId:String)
 GET     /create                     controllers.MainController.create
 GET     /removeDB                   controllers.MainController.removeAll
 GET     /update                     controllers.MainController.update
 GET     /suggestions                controllers.MainController.listSuggestions
+GET     /sum                        controllers.MainController.calculateTotal
 POST    /suggestions                controllers.MainController.createSuggestion
 
 # Map static resources from the /public folder to the /assets URL path

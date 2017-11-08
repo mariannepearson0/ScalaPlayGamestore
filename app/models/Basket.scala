@@ -1,5 +1,8 @@
 package models
 
-class Basket {
+case class Basket (
+  gameID:String,
+  customerID: String,
+  price: Double
+)
 
-}
