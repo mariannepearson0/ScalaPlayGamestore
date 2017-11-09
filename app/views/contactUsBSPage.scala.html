@@ -55,9 +55,9 @@
       </h1>
         <ul>
             <li>Address: NumberOne, MediaCityUK, Salford</li>
-            <li>Telephone: 000000000</li>
-            <li>email: gamefacehotmail.com"</li>
-            <li>Fax: 0000000</li>
+            <li>Telephone: 12345678910</li>
+            <li>email: gameface@@hotmail.com</li>
+            <li>Fax: 12345678910</li>
         </ul>
 
     </div>
@@ -92,8 +92,9 @@
     </script>
       </body>
 
-      @main("CDs") {
-          <h1>Suggestions</h1>
+      @main("Suggestions") {
+          <h3>Make a Suggestion</h3>
+          <!--<h5>Current Suggestions</h5>
           <table>
               <thead>
                   <tr><th>Name</th><th>Suggestion</th></tr>
@@ -105,20 +106,24 @@
               }
               </tbody>
           </table>
-          <hr/>
+          <hr/> -->
 
           @helper.form(routes.MainController.createSuggestion()) {
-              @helper.inputText(form("name"), 'label-> "Name" , 'showConstraints -> false)
+              @helper.inputText(form("name"), '_label-> "Name" , '_showConstraints -> false)
               @helper.inputText(form("suggest"), '_label -> "Suggestion" , '_showConstraints -> false)
               <button type="submit">Create Suggestion</button>
+
           }
+          <a class="nav-link" href=@routes.MainController.allSuggestions()>See All Suggestions</a>
       }
+
+
 
 
     <!-- Footer -->
     <footer class="py-5 bg-dark">
       <div class="container">
-        <p class="m-0 text-center text-white">Copyright &copy; Your Website 2017</p>
+        <p class="m-0 text-center text-white">Copyright &copy; GameFace 2017</p>
       </div>
       <!-- /.container -->
     </footer>

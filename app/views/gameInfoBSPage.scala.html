@@ -39,6 +39,9 @@
             <li class="nav-item">
               <a class="nav-link" href=@routes.MainController.contactUsPage()>Contact Us</a>
             </li>
+              <li class="nav-item">
+                  <a class="nav-link" href=@routes.MainController.goToBasket()>Basket</a>
+              </li>
           </ul>
         </div>
       </div>
@@ -46,49 +49,57 @@
 
     <!-- Page Content -->
     <div class="container">
-        @for(game<-gameList if game.gameID == ID){
+        @for(game<-gameList if game.gameID == ID) {
 
-      <!-- Portfolio Item Heading -->
-      <h1 class="my-4">@game.title
-        <small></small>
-      </h1>
+                <!-- Portfolio Item Heading -->
+            <h1 class="my-4">@game.title
+            <small></small>
+            </h1>
 
-      <!-- Portfolio Item Row -->
-      <div class="row">
+                <!-- Portfolio Item Row -->
+            <div class="row">
 
-        <div class="col-md-8">
-          <img class="img-fluid" src=@routes.Assets.at(game.imageURL) alt="">
+                <div class="col-md-8">
+                    <img class="img-fluid" src=@routes.Assets.at(game.imageURL) alt="">
+                </div>
+
+                <div class="col-md-4">
+                    <h3 class="my-3">Game Description</h3>
+                    <p>@game.description</p>
+                    <a class="nav-link" href=@routes.MainController.addToBasket(game.gameID)>Add To Basket</a>
+
+                    <h4>Quantity</h4>
+
+                    <SELECT>
+                    @for(i<-1 to 10) {
+                        <OPTION Value="@i">@i</OPTION>
+                    }
+                    </SELECT>
+
+                    }
+                </div>
+            </div>
         </div>
+          <!-- /.container -->
+      @for(game<-gameList if game.gameID == ID) {
 
-        <div class="col-md-4">
-          <h3 class="my-3">Game Description</h3>
-          <p>@game.description</p>
-            <a class="nav-link" href="@routes.MainController.checkoutPage(game.gameID)">Add To Basket</a>
-        </div>
-
-      </div>
-
-
-        }
-      <!-- /.row -->
-
-
-
-      <!-- /.row -->
-
-    </div>
-    <!-- /.container -->
-
-      <div class="row">
-          <div class="col-md-8">
-      <iframe width="560" height="315" src="https://www.youtube.com/embed/9tDMLXn99P4" frameborder="0" allowfullscreen></iframe>
+      <div class="container">
+          <div class="row">
+              <div class="col-md-8">
+                  <div class="col-md-4">
+                      <h3 class="my-4">Game Trailer</h3>
+                      <iframe width="560" height="315" src=@game.videoURL frameborder="200" allowfullscreen></iframe>
+                  </div>
+              </div>
           </div>
       </div>
+  }
+
 
     <!-- Footer -->
     <footer class="py-5 bg-dark">
       <div class="container">
-        <p class="m-0 text-center text-white">Copyright &copy; Your Website 2017</p>
+        <p class="m-0 text-center text-white">Copyright &copy; GameFace 2017</p>
       </div>
       <!-- /.container -->
     </footer>

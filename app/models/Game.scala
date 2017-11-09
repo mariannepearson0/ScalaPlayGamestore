@@ -6,13 +6,9 @@ case class Game (
                 price: Double,
                 description:String,
                 imageURL:String,
-                category:String
+                category:String,
+                videoURL:String
                 )
 
-object JsonFormats {
-  import play.api.libs.json.Json
-
-  implicit val gameFormat = Json.format[Game]
-}
 
 
