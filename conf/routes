@@ -8,12 +8,18 @@ GET     /                           controllers.MainController.homepage
 GET     /gameInfo/:id               controllers.MainController.gameInfoPage(id:String)
 GET     /contactUs                  controllers.MainController.contactUsPage
 GET     /checkout/:gameId           controllers.MainController.checkoutPage(gameId:String)
-GET     /create                     controllers.MainController.create
+#GET     /create                     controllers.MainController.create
 GET     /removeDB                   controllers.MainController.removeAll
 GET     /update                     controllers.MainController.update
 GET     /suggestions                controllers.MainController.listSuggestions
-GET     /sum                        controllers.MainController.calculateTotal
+GET     /payments                   controllers.MainController.listPayment
+GET     /basket                     controllers.MainController.goToBasket
+GET     /remove                     controllers.MainController.removeItem
+GET     /cancel                     controllers.MainController.cancelOrder
 POST    /suggestions                controllers.MainController.createSuggestion
+POST    /payments                   controllers.MainController.createPayment
+GET     /confirm                    controllers.MainController.confirmOrder
+GET     /categories/:cat            controllers.MainController.gameCats(cat:String)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

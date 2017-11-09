@@ -5,7 +5,8 @@ case class Game (
                 title: String,
                 price: Double,
                 description:String,
-                imageURL:String
+                imageURL:String,
+                category:String
                 )
 
 object JsonFormats {

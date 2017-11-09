@@ -38,6 +38,9 @@
             <li class="nav-item">
               <a class="nav-link" href="@routes.MainController.contactUsPage()">Contact Us</a>
             </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="@routes.MainController.goToBasket()">Basket</a>
+              </li>
           </ul>
         </div>
       </div>
@@ -52,9 +55,10 @@
 
           <h1 class="my-4">Game Face</h1>
           <div class="list-group">
-            <a href="#" class="list-group-item" onclick="">Latest</a>
-            <a href="#" class="list-group-item">Featured</a>
-            <a href="#" class="list-group-item">Most Popular</a>
+              <a href=@routes.MainController.homepage() class="list-group-item">All Games</a>
+            <a href=@routes.MainController.gameCats("New Releases") class="list-group-item">New Releases</a>
+            <a href=@routes.MainController.gameCats("Featured") class="list-group-item">Featured</a>
+            <a href=@routes.MainController.gameCats("Most Popular") class="list-group-item">Most Popular</a>
           </div>
 
         </div>
@@ -103,9 +107,6 @@
                   <h5>£@game.price</h5>
                   <p class="card-text">@game.description</p>
                 </div>
-                <div class="card-footer">
-                  <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
-                </div>
               </div>
             </div>
               }
@@ -125,7 +126,7 @@
     <!-- Footer -->
     <footer class="py-5 bg-dark">
       <div class="container">
-        <p class="m-0 text-center text-white">Copyright &copy; Your Website 2017</p>
+        <p class="m-0 text-center text-white">Copyright &copy; GameFace 2017</p>
       </div>
       <!-- /.container -->
     </footer>

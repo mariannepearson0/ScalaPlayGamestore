@@ -1,8 +1,8 @@
 package controllers
 
 import javax.inject.Inject
-import models.Game
-import models.Suggestion
+
+import models.{Game, Payment, Suggestion}
 import models.JsonFormats.gameFormat
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.libs.json.Json
@@ -12,6 +12,7 @@ import play.modules.reactivemongo.json._
 import reactivemongo.api.Cursor
 import reactivemongo.bson.BSONDocument
 import reactivemongo.play.json.collection.JSONCollection
+
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 
@@ -27,13 +28,13 @@ class MainController @Inject() (val reactiveMongoApi: ReactiveMongoApi, val mess
   def collection: Future[JSONCollection] = database.map(
     _.collection[JSONCollection]("games"))
 
-  def create = Action.async {
-    val game = Game("F", "Gremlins Fight Back", 39.99, "The gremlins are back for another" +
-        " skin crawling adventure. Raise Gizmo and help him defeat the evil Mogwai. A game which " +
-        " Marianne's made up game magazine says is a MUST PLAY!", "images/gremlins.jpg")
-    val futureResult = collection.flatMap(_.insert(game))
-    futureResult.map(_ => Ok)
-  }
+//  def create = Action.async {
+//    val game = Game("F", "Gremlins Fight Back", 39.99, "The gremlins are back for another" +
+//        " skin crawling adventure. Raise Gizmo and help him defeat the evil Mogwai. A game which " +
+//        " Marianne's made up game magazine says is a MUST PLAY!", "images/gremlins.jpg")
+//    val futureResult = collection.flatMap(_.insert(game))
+//    futureResult.map(_ => Ok)
+//  }
 
   def homepage = Action.async {
     val cursor: Future[Cursor[Game]] = collection.map {
@@ -63,9 +64,9 @@ class MainController @Inject() (val reactiveMongoApi: ReactiveMongoApi, val mess
   }
 
   def update: Action[AnyContent] = Action.async { implicit request =>
-    val game = Game("F", "Gremlins Fight Back", 39.99, "The gremlins are back " +
-      "for another skin crawling adventure. Raise Gizmo and help him defeat the evil Mogwai. " +
-      "A game which Marianne's made up game magazine says is a MUST PLAY!", raw"images/gremlins.jpg")
+    val game = Game("F", "Gremlins Fight Back", 36.99, "The gremlins are back for another " +
+      "skin crawling adventure. Raise Gizmo and help him defeat the evil Mogwai. A game " +
+      "which Marianne's made up game magazine calls a MUST PLAY!", raw"images/gremlins.jpg", "Most Popular")
     val selector = BSONDocument("gameID" -> "F")
     val futureResult = collection.map(_.findAndUpdate(selector,game))
     futureResult.map(_ => Ok("Updated user"))
@@ -73,6 +74,11 @@ class MainController @Inject() (val reactiveMongoApi: ReactiveMongoApi, val mess
 
   def listSuggestions = Action { implicit request =>
     Ok(views.html.contactUsBSPage(Suggestion.suggestions, Suggestion.createSuggestionForm))
+  }
+
+  def listPayment = Action { implicit request =>
+
+    Ok(views.html.checkoutPageBS(basket)(gamesList)(s"$sum")(Payment.payments, Payment.createPaymentForm))
   }
 
   def createSuggestion = Action { implicit request =>
@@ -86,20 +92,61 @@ class MainController @Inject() (val reactiveMongoApi: ReactiveMongoApi, val mess
     })
   }
 
+  def createPayment = Action { implicit request =>
+    val formValidationResult = Payment.createPaymentForm.bindFromRequest
+    formValidationResult.fold({ formWithErrors =>
+      BadRequest(views.html.checkoutPageBS(basket)(gamesList)(s"$sum")(Payment.payments, formWithErrors))
+    }, { pay =>
+      Payment.payments.append(pay)
+      Redirect(routes.MainController.confirmOrder)
+      //Redirect(routes.MainController.listPayment())
+    })
+  }
+
+  def goToBasket = Action {
+    Ok(views.html.checkoutPageBS(basket)(gamesList)(f"£$sum%2.2f")(Payment.payments, Payment.createPaymentForm))
+  }
+
   def checkoutPage(gameId:String) = Action {
       basket += gameId
-      Ok(views.html.checkoutPageBS(basket)(gamesList)(sum))
-  }
-
-  def calculateTotal = Action {
-    var newsum:Double = 0
-    for(item <- basket){
-      for(game <- gamesList if game.gameID == item){
-        newsum += game.price
+      for(game <- gamesList if game.gameID == gameId){
+        sum += game.price
       }
-    }
-    Ok(views.html.checkoutPageBS(basket)(gamesList)(newsum))
+      Ok(views.html.checkoutPageBS(basket)(gamesList)(f"£$sum%2.2f")(Payment.payments, Payment.createPaymentForm))
   }
 
+//  def calculateTotal = Action {
+//    //var newsum:Double = 0
+//    for(item <- basket){
+//      for(game <- gamesList if game.gameID == item){
+//        sum += game.price
+//      }
+//    }
+//    Ok(views.html.checkoutPageBS(basket)(gamesList)(sum))
+//  }
+
+  def removeItem = Action {
+    if(basket.length>0) {
+      for (game <- gamesList if game.gameID == basket(basket.length - 1)) {
+        sum -= game.price
+      }
+      basket.remove(basket.length - 1)
+    }
+    Ok(views.html.checkoutPageBS(basket)(gamesList)(f"£$sum%2.2f")(Payment.payments, Payment.createPaymentForm))
+  }
+
+  def cancelOrder = Action {
+    basket.clear()
+    sum = 0
+    Ok(views.html.homepageBS(gamesList))
+  }
+
+  def confirmOrder = Action {
+    Ok(views.html.conformationPage(basket)(gamesList)(f"£$sum%2.2f")(Payment.payments))
+  }
+
+  def gameCats(category:String) = Action {
+    Ok(views.html.gameCategories(gamesList)(category))
+  }
 }
 

@@ -1,0 +1,105 @@
+@(gameList: scala.collection.mutable.Set[Game])(category:String)
+
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <title>GameFace Homepage</title>
+
+            <!-- Bootstrap core CSS -->
+        <link href="@routes.Assets.at("startbootstrap-shop-homepage-gh-pages/vendor/bootstrap/css/bootstrap.min.css")" rel="stylesheet">
+
+            <!-- Custom styles for this template -->
+        <link href="@routes.Assets.at("startbootstrap-shop-homepage-gh-pages/css/shop-homepage.css")" rel="stylesheet">
+
+    </head>
+
+    <body>
+
+            <!-- Navigation -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+            <div class="container">
+                <a class="navbar-brand" href="#"></a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarResponsive">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="#">Home
+                                <span class="sr-only">(current)</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="@routes.MainController.contactUsPage()">Contact Us</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="@routes.MainController.goToBasket()">Basket</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+            <!-- Page Content -->
+        <div class="container">
+
+            <div class="row">
+
+                <div class="col-lg-3">
+
+                    <h1 class="my-4">Game Face</h1>
+                    <div class="list-group">
+                        <a href=@routes.MainController.homepage() class="list-group-item">All Games</a>
+                        <a href=@routes.MainController.gameCats("New Releases") class="list-group-item">New Releases</a>
+                        <a href=@routes.MainController.gameCats("Featured") class="list-group-item">Featured</a>
+                        <a href=@routes.MainController.gameCats("Most Popular") class="list-group-item">Most Popular</a>
+                    </div>
+
+                </div>
+                    <!-- /.col-lg-3 -->
+
+
+                    @for(game <- gameList if game.category == category) {
+
+                        <div class="col-lg-4 col-md-6 mb-4">
+                            <div class="card h-100">
+                                <a href='@routes.MainController.gameInfoPage(game.gameID)'><img class="card-img-top" src="@routes.Assets.at(game.imageURL)" alt=""></a>
+                                <div class="card-body">
+                                    <h4 class="card-title">
+                                        <a href='@routes.MainController.gameInfoPage(game.gameID)'>@game.title</a>
+                                    </h4>
+                                    <h5>£@game.price</h5>
+                                    <p class="card-text">@game.description</p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                    </div>
+                        <!-- /.row -->
+
+               </div>
+                    <!-- /.col-lg-9 -->
+
+            <!-- Footer -->
+        <footer class="py-5 bg-dark">
+            <div class="container">
+                <p class="m-0 text-center text-white">Copyright &copy; GameFace 2017</p>
+            </div>
+                <!-- /.container -->
+        </footer>
+
+            <!-- Bootstrap core JavaScript -->
+        <script src="@routes.Assets.at("startbootstrap-shop-homepage-gh-pages/vendor/jquery/jquery.min.js")"></script>
+        <script src="@routes.Assets.at("startbootstrap-shop-homepage-gh-pages/vendor/bootstrap/js/bootstrap.bundle.min.js")"></script>
+
+    </body>
+
+</html>
