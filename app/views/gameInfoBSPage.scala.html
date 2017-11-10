@@ -68,13 +68,6 @@
                     <p>@game.description</p>
                     <a class="nav-link" href=@routes.MainController.addToBasket(game.gameID)>Add To Basket</a>
 
-                    <h4>Quantity</h4>
-
-                    <SELECT>
-                    @for(i<-1 to 10) {
-                        <OPTION Value="@i">@i</OPTION>
-                    }
-                    </SELECT>
 
                     }
                 </div>

@@ -20,7 +20,7 @@ class MainController @Inject() (val reactiveMongoApi: ReactiveMongoApi, val mess
 
   var gamesList = scala.collection.mutable.Set[Game]()
   var sugsList = scala.collection.mutable.Set[Suggest]()
-  var basket = Map[String,Int]()
+  var basket = scala.collection.mutable.Map[String,Int]()
   var sum: Double = 0
 
   def gamesCollection: Future[JSONCollection] = database.map(
@@ -39,30 +39,22 @@ class MainController @Inject() (val reactiveMongoApi: ReactiveMongoApi, val mess
   }
 
   def homepage = Action.async {
-    val cursor: Future[Cursor[Game]] = gamesCollection.map {
-      _.find(Json.obj()).
-        sort(Json.obj("created" -> -1)).
-        cursor[Game]
+      val cursor: Future[Cursor[Game]] = gamesCollection.map {
+        _.find(Json.obj()).
+          sort(Json.obj("created" -> -1)).
+          cursor[Game]
+      }
+      val futureGamesList: Future[List[Game]] = cursor.flatMap(_.collect[List]())
+      futureGamesList.map { games =>
+        (for (game <- games) gamesList += game)
+        Ok(views.html.homepageBS(gamesList))
+      }
     }
-    val futureGamesList: Future[List[Game]] = cursor.flatMap(_.collect[List]())
-    futureGamesList.map { games =>
-      (for (game <- games) gamesList += game)
-      Ok(views.html.homepageBS(gamesList))
-    }
-  }
 
   def gameInfoPage(id:String) = Action {
-    val cursor: Future[Cursor[Game]] = gamesCollection.map {
-      _.find(Json.obj()).
-        sort(Json.obj("created" -> -1)).
-        cursor[Game]
+      Ok(views.html.gameInfoBSPage(id)(gamesList))
     }
-    val futureGamesList: Future[List[Game]] = cursor.flatMap(_.collect[List]())
-    futureGamesList.map { games =>
-      (for (game <- games) gamesList += game)
-    }
-    Ok(views.html.gameInfoBSPage(id)(gamesList))
-  }
+
 
   def contactUsPage = Action {
     Ok(views.html.contactUsBSPage(Suggestion.suggestions, Suggestion.createSuggestionForm))
@@ -132,7 +124,10 @@ class MainController @Inject() (val reactiveMongoApi: ReactiveMongoApi, val mess
   }
 
   def addToBasket(gameId:String) = Action {
-    basket += gameId
+    if(basket.contains(gameId)) {
+      basket(gameId) = basket.get(gameId).get + 1
+    }
+    else basket(gameId) = 1
     for(game<-gamesList if game.gameID == gameId){
       sum += game.price
     }
@@ -145,16 +140,19 @@ class MainController @Inject() (val reactiveMongoApi: ReactiveMongoApi, val mess
 
   def removeItem = Action {
     if(basket.size>0) {
-      for (game <- gamesList if game.gameID == basket(basket.size - 1)) {
+      for (game <- gamesList if game.gameID == basket.keySet.last) {
         sum -= game.price
       }
-      basket =- basket(basket.size - 1)
+      if(basket.get(basket.keySet.last).get > 1){
+        basket(basket.keySet.last) = basket.get(basket.keySet.last).get - 1
+      }
+      else basket.remove(basket.keySet.last)
     }
     Ok(views.html.checkoutPageBS(basket)(gamesList)(f"£$sum%2.2f")(Payment.payments, Payment.createPaymentForm))
   }
 
   def cancelOrder = Action {
-    basket.clear()
+    basket.clear
     sum = 0
     Ok(views.html.homepageBS(gamesList))
   }

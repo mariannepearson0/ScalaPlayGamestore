@@ -10,7 +10,7 @@ object Payment {
 
   val createPaymentForm = Form(
     mapping(
-      "nameOnCard" -> nonEmptyText,
+      "nameOnCard" -> nonEmptyText.verifying(_.matches("^[a-z A-Z]*$")),
       "cardNumber" -> nonEmptyText(minLength=16, maxLength=16).verifying(_.matches("^[0-9]*$")),
       "Csc" -> number(min=100, max=999),
       "email" -> email

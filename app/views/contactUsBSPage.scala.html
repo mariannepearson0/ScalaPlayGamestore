@@ -92,22 +92,6 @@
     </script>
       </body>
 
-      @main("Suggestions") {
-          <h3>Make a Suggestion</h3>
-          <!--<h5>Current Suggestions</h5>
-          <table>
-              <thead>
-                  <tr><th>Name</th><th>Suggestion</th></tr>
-              </thead>
-              <tbody>
-              @for(sug <- sugs) {
-                  <tr><td>@sug.name</td>
-                      <td>@sug.suggest</td></tr>
-              }
-              </tbody>
-          </table>
-          <hr/> -->
-
           @helper.form(routes.MainController.createSuggestion()) {
               @helper.inputText(form("name"), '_label-> "Name" , '_showConstraints -> false)
               @helper.inputText(form("suggest"), '_label -> "Suggestion" , '_showConstraints -> false)
@@ -115,10 +99,6 @@
 
           }
           <a class="nav-link" href=@routes.MainController.allSuggestions()>See All Suggestions</a>
-      }
-
-
-
 
     <!-- Footer -->
     <footer class="py-5 bg-dark">

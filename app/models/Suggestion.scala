@@ -10,7 +10,7 @@ object Suggestion {
 
   val createSuggestionForm = Form(
     mapping(
-      "name" -> nonEmptyText.verifying(_.matches("^[a-zA-Z]*$")),
+      "name" -> nonEmptyText,
       "suggest" -> nonEmptyText(minLength=10)
     )(Suggestion.apply)(Suggestion.unapply)
   )
