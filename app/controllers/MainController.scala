@@ -1,11 +1,9 @@
 package controllers
 
 import javax.inject.Inject
-
 import models.{Game, Payment, Suggestion, Suggest}
 import models.JsonFormats.suggestionFormat
 import models.JsonFormats.gameFormat
-
 import play.api.i18n.{I18nSupport, MessagesApi}
 import play.api.libs.json.Json
 import play.api.mvc.{Action, AnyContent, Controller}
@@ -14,7 +12,6 @@ import play.modules.reactivemongo.json._
 import reactivemongo.api.Cursor
 import reactivemongo.bson.BSONDocument
 import reactivemongo.play.json.collection.JSONCollection
-
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 
@@ -23,7 +20,7 @@ class MainController @Inject() (val reactiveMongoApi: ReactiveMongoApi, val mess
 
   var gamesList = scala.collection.mutable.Set[Game]()
   var sugsList = scala.collection.mutable.Set[Suggest]()
-  var basket = scala.collection.mutable.ArrayBuffer[String]().distinct
+  var basket = Map[String,Int]()
   var sum: Double = 0
 
   def gamesCollection: Future[JSONCollection] = database.map(
@@ -91,7 +88,6 @@ class MainController @Inject() (val reactiveMongoApi: ReactiveMongoApi, val mess
   }
 
   def listPayment = Action { implicit request =>
-
     Ok(views.html.checkoutPageBS(basket)(gamesList)(s"$sum")(Payment.payments, Payment.createPaymentForm))
   }
 
@@ -148,11 +144,11 @@ class MainController @Inject() (val reactiveMongoApi: ReactiveMongoApi, val mess
   }
 
   def removeItem = Action {
-    if(basket.length>0) {
-      for (game <- gamesList if game.gameID == basket(basket.length - 1)) {
+    if(basket.size>0) {
+      for (game <- gamesList if game.gameID == basket(basket.size - 1)) {
         sum -= game.price
       }
-      basket.remove(basket.length - 1)
+      basket =- basket(basket.size - 1)
     }
     Ok(views.html.checkoutPageBS(basket)(gamesList)(f"£$sum%2.2f")(Payment.payments, Payment.createPaymentForm))
   }
