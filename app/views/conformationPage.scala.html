@@ -76,13 +76,14 @@
                         <!-- <body class="col-lg-12 text-center">-->
                     <table class = "lead">
                         <thead>
-                            <tr><th>Title</th><th>Price</th></tr>
+                            <tr><th>Title</th><th>Price</th><th>Quantity</th></tr>
                         </thead>
                         <tbody>
                         @for(item <- basket) {
-                            @for(game <- gamesList if game.gameID == item) {
+                            @for(game <- gamesList if game.gameID == item._1) {
                                 <tr><td>@game.title</td>
-                                    <td>@game.price</td></tr>
+                                    <td>@game.price</td>
+                                <td>@item._2</td></tr>
                             }
                         }
                         </tbody>

@@ -158,6 +158,8 @@ class MainController @Inject() (val reactiveMongoApi: ReactiveMongoApi, val mess
   }
 
   def confirmOrder = Action {
+    basket.clear
+    sum = 0
     Ok(views.html.conformationPage(basket)(gamesList)(f"£$sum%2.2f")(Payment.payments))
   }
 
